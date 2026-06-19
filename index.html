@@ -1060,6 +1060,7 @@ function renderGrid(cat,catName){
   const grid=document.getElementById('projGrid');
   const header=document.getElementById('projHeader');
   const items=projects[cat]||[];
+  grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem';
   grid.innerHTML=items.map((p,i)=>`
     <div class="proj-card" onclick="openProjectVideo('${p.ytId}','${p.title.replace(/'/g,"\\'")}','${catName}','${p.tags.replace(/'/g,"\\'")}')">
       <div class="proj-thumb" style="background:${p.bg}">
