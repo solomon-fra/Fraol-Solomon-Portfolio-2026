@@ -1041,7 +1041,7 @@ function selectTape(el,cat,name){
   renderGrid(cat,name);
 
   // show projArea and animate in
-  projArea.style.display='grid';
+  projArea.style.display='block';
   projArea.style.opacity='0';
   projArea.style.transform='translateY(16px)';
   requestAnimationFrame(()=>{
@@ -1058,6 +1058,9 @@ function selectTape(el,cat,name){
 // RENDER GRID project cards, click opens full screen lightbox
 function renderGrid(cat,catName){
   const grid=document.getElementById('projGrid');
+  grid.style.display='grid';
+grid.style.gridTemplateColumns='repeat(3,1fr)';
+grid.style.gap='1.2rem';
   const header=document.getElementById('projHeader');
   const items=projects[cat]||[];
   grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem';
