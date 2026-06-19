@@ -1061,6 +1061,8 @@ function renderGrid(cat,catName){
   grid.style.display='grid';
 grid.style.gridTemplateColumns='repeat(3,1fr)';
 grid.style.gap='1.2rem';
+grid.style.width='100%';
+
   const header=document.getElementById('projHeader');
   const items=projects[cat]||[];
   grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem';
