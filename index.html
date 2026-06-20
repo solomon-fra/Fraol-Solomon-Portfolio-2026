@@ -290,10 +290,9 @@ nav.scrolled{background:rgba(179,198,196,.95);backdrop-filter:blur(20px);padding
 
 /* PROJECT GRID */
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;opacity:0;transform:translateY(16px);transition:opacity .45s,transform .45s}
-.proj-grid.vis{opacity:1;transform:translateY(0)}
-
+.proj-grid.vis{opacity:1;transform:translateY(0);display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
 /* PROJECT CARD */
-.proj-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .35s}
+.proj-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .35s;width:100%;min-width:0}
 .proj-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 16px 40px var(--shadow)}
 .proj-thumb{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .proj-thumb-lbl{font-size:1rem;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.05);text-transform:uppercase;text-align:center;padding:0 .5rem;position:relative;z-index:1;transition:opacity .3s}
@@ -1066,6 +1065,9 @@ grid.style.width='100%';
   const header=document.getElementById('projHeader');
   const items=projects[cat]||[];
   grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem';
+  grid.style.display='grid';
+grid.style.gridTemplateColumns='repeat(3,1fr)';
+grid.style.gap='1.2rem';
   grid.innerHTML=items.map((p,i)=>`
     <div class="proj-card" onclick="openProjectVideo('${p.ytId}','${p.title.replace(/'/g,"\\'")}','${catName}','${p.tags.replace(/'/g,"\\'")}')">
       <div class="proj-thumb" style="background:${p.bg}">
