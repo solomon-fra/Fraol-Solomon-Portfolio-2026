@@ -128,9 +128,17 @@ nav.scrolled{background:rgba(179,198,196,.95);backdrop-filter:blur(20px);padding
 
 /* DICE HERO */
 .hero-right{display:flex;align-items:center;justify-content:center;position:relative;opacity:0;animation:fadeUp 1s .5s forwards}
-.dice-container{position:relative;width:420px;height:420px;display:flex;align-items:center;justify-content:center}
-#diceCanvas{display:block;width:100%;height:100%;cursor:grab}
-#diceCanvas:active{cursor:grabbing}
+.dice-container{position:relative;width:420px;height:420px;display:flex;align-items:center;justify-content:center;perspective:1000px}
+.css-dice{position:relative;width:180px;height:180px;transform-style:preserve-3d;animation:diceSpin 12s linear infinite;cursor:grab}
+.css-dice:active{cursor:grabbing;animation-play-state:paused}
+.css-dice .face{position:absolute;width:180px;height:180px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(2px)}
+.css-dice .front{transform:translateZ(90px)}
+.css-dice .back{transform:translateZ(-90px) rotateY(180deg)}
+.css-dice .right{transform:rotateY(90deg) translateZ(90px)}
+.css-dice .left{transform:rotateY(-90deg) translateZ(90px)}
+.css-dice .top{transform:rotateX(90deg) translateZ(90px)}
+.css-dice .bottom{transform:rotateX(-90deg) translateZ(90px)}
+@keyframes diceSpin{from{transform:rotateX(0) rotateY(0)}to{transform:rotateX(360deg) rotateY(360deg)}}
 .dice-label{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);white-space:nowrap;font-family:'Cabinet Grotesk',sans-serif}
 
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
@@ -628,8 +636,14 @@ footer{border-top:1px solid var(--border);padding:2.5rem 5rem;display:flex;justi
     </div>
     <div class="hero-right" id="heroRight">
       <div class="dice-container">
-        <canvas id="diceCanvas" width="420" height="420"></canvas>
-        <div class="dice-label">move your cursor</div>
+        <div class="css-dice">
+          <div class="face front"></div>
+          <div class="face back"></div>
+          <div class="face right"></div>
+          <div class="face left"></div>
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -915,8 +929,6 @@ footer{border-top:1px solid var(--border);padding:2.5rem 5rem;display:flex;justi
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js" defer></script>
 <script defer>
 // THEME
 function toggleTheme(){
@@ -1002,128 +1014,6 @@ window.addEventListener('scroll',()=>document.getElementById('nav').classList.to
 // REVEAL
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.08});
 document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
-
-// DICE 3D HERO
-(function(){
-  const canvas=document.getElementById('diceCanvas');
-  if(!canvas||typeof THREE==='undefined')return;
-  const W=420,H=420;
-  canvas.width=W;canvas.height=H;
-
-  // Lower-cost rendering on phones / touch devices / low-core CPUs
-  const isLowPower=window.matchMedia('(max-width:768px)').matches
-    ||window.matchMedia('(pointer:coarse)').matches
-    ||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4);
-
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:!isLowPower,alpha:true,powerPreference:isLowPower?'low-power':'high-performance'});
-  renderer.setSize(W,H);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,isLowPower?1:2));
-  renderer.outputEncoding=THREE.sRGBEncoding;
-  renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.4;
-
-  const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(38,1,.1,100);
-  camera.position.set(0,0,5.5);
-
-  // Lighting matched to palette
-  scene.add(new THREE.AmbientLight(0xB3C6C4,2.5));
-  const dir=new THREE.DirectionalLight(0xffffff,3);
-  dir.position.set(4,6,5);scene.add(dir);
-  const blue=new THREE.PointLight(0x2546D1,6,18);
-  blue.position.set(-4,2,3);scene.add(blue);
-  const rim=new THREE.PointLight(0x8ab0ae,2,12);
-  rim.position.set(0,-4,-4);scene.add(rim);
-
-  // Decode GLB
-    const loader=new THREE.GLTFLoader();
-  loader.load('dice.glb',(gltf)=>{
-      const model=gltf.scene;
-
-      // Recolor dots to electric blue
-      model.traverse(child=>{
-        if(child.isMesh&&child.material){
-          const m=child.material;
-          if(m.color){
-            const c=m.color;
-            if(c.r<0.2&&c.g<0.2&&c.b<0.2){
-              m.color.setHex(0x2546D1);
-              m.metalness=0.4;
-              m.roughness=0.3;
-              m.emissive=new THREE.Color(0x0d1f6b);
-              m.emissiveIntensity=0.3;
-            }
-          }
-        }
-      });
-
-      const box=new THREE.Box3().setFromObject(model);
-      const center=box.getCenter(new THREE.Vector3());
-      const size=box.getSize(new THREE.Vector3());
-      const maxDim=Math.max(size.x,size.y,size.z);
-      const scale=2.2/maxDim;
-      model.scale.setScalar(scale);
-      model.position.copy(center).negate().multiplyScalar(scale);
-      scene.add(model);
-
-      // Mouse interaction
-      let tX=0,tY=0,cX=0,cY=0;
-      let isDrag=false,lX=0,lY=0;
-      let autoAngle=0,spinning=true;
-
-      document.addEventListener('mousemove',e=>{
-        if(isDrag){
-          tY+=(e.clientX-lX)*.013;
-          tX+=(e.clientY-lY)*.013;
-          lX=e.clientX;lY=e.clientY;
-        } else {
-          const r=canvas.getBoundingClientRect();
-          const nx=(e.clientX-r.left)/r.width-.5;
-          const ny=(e.clientY-r.top)/r.height-.5;
-          // Only react when near the hero area
-          const heroR=document.getElementById('heroRight');
-          if(heroR){
-            const hr=heroR.getBoundingClientRect();
-            const inHero=e.clientX>=hr.left&&e.clientX<=hr.right&&e.clientY>=hr.top&&e.clientY<=hr.bottom;
-            if(inHero){tY=nx*1.2;tX=ny*.8;spinning=false;}
-            else{spinning=true;}
-          }
-        }
-      });
-
-      canvas.addEventListener('mousedown',e=>{
-        isDrag=true;spinning=false;
-        lX=e.clientX;lY=e.clientY;
-        canvas.style.cursor='grabbing';
-      });
-      window.addEventListener('mouseup',()=>{isDrag=false;canvas.style.cursor='grab'});
-      canvas.addEventListener('wheel',e=>{
-        e.preventDefault();
-        camera.position.z=Math.max(3,Math.min(9,camera.position.z+e.deltaY*.006));
-      },{passive:false});
-
-      // Only spend GPU time on this when it's actually on screen
-      let diceOnScreen=true;
-      new IntersectionObserver(entries=>{
-        diceOnScreen=entries[0].isIntersecting;
-      },{threshold:0}).observe(canvas);
-
-      // Animate
-      (function animate(){
-        requestAnimationFrame(animate);
-        if(!diceOnScreen)return;
-        if(spinning)autoAngle+=.006;
-        cX+=(tX-cX)*.07;
-        cY+=(tY-cY)*.07;
-        model.rotation.x=cX;
-        model.rotation.y=cY+autoAngle;
-        // Subtle float
-        model.position.y=Math.sin(Date.now()*.0008)*.12;
-        renderer.render(scene,camera);
-      })();
-
-    },undefined,(err)=>{console.error('Dice load error:',err);});
-})();
 
 
 // LETTERBOX SHOWREEL scroll trigger
