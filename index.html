@@ -132,7 +132,7 @@ nav.scrolled{background:rgba(179,198,196,.95);backdrop-filter:blur(20px);padding
 .css-vhs{display:block;position:relative;width:360px;height:220px;transform-style:preserve-3d;animation:vhsSpin 12s linear infinite;cursor:pointer;text-decoration:none}
 .css-vhs:hover{animation-play-state:paused}
 .css-vhs .face{position:absolute;width:360px;height:220px;border-radius:8px;background:var(--accent);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-.css-vhs .front{transform:translateZ(63px);padding:18px 22px;box-sizing:border-box;background-image:linear-gradient(155deg,rgba(37,70,209,.35),rgba(10,15,40,.55)),url(images/vhs-shell.webp);background-size:cover;background-position:center;border-radius:8px}
+.css-vhs .front{transform:translateZ(63px);padding:18px 22px;box-sizing:border-box;background-image:linear-gradient(155deg,rgba(32,64,242,.55),rgba(23,48,196,.4)),url(images/vhs-shell.webp);background-size:cover;background-position:center;border-radius:8px}
 .css-vhs .back{transform:translateZ(-63px) rotateY(180deg)}
 .css-vhs .right{width:126px;transform:rotateY(90deg) translateZ(180px);left:117px}
 .css-vhs .left{width:126px;transform:rotateY(-90deg) translateZ(180px);left:117px}
@@ -917,7 +917,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 5rem;display:flex;justi
   <div class="ct-sentence reveal">
     Hey, my name is <input class="ct-input" id="cn" placeholder="your name" style="width:150px"> and I need <select class="ct-select" id="cs"><option value="">a service</option><option>a video edit</option><option>motion graphics</option><option>AI production</option><option>a full campaign</option><option>photoshoot direction</option><option>video production</option></select> for <input class="ct-input" id="cb" placeholder="brand name" style="width:150px">.
   </div>
-  <a href="mailto:solomonfraol3@gmail.com" class="ct-email-wrap reveal">
+  <a href="mailto:solomonfraol3@gmail.com" class="ct-email-wrap reveal" onclick="return handleemailclick(event)">
     <span class="ct-email-t">solomonfraol3@gmail.com</span>
     <span class="ct-arr">↗</span>
   </a><br>
@@ -1231,11 +1231,28 @@ shelf.addEventListener('mouseup',()=>{isDrag=false;shelf.style.cursor='grab'});
 shelf.addEventListener('mousemove',e=>{if(!isDrag)return;e.preventDefault();const x=e.pageX-shelf.offsetLeft;shelf.scrollLeft=shelfScrollLeft-(x-shelfStartX)*1.5});
 
 // EMAIL
+function isApplePlatform(){
+  return /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+}
 function sendMail(){
   const n=document.getElementById('cn').value||'there';
   const s=document.getElementById('cs').value||'a project';
   const b=document.getElementById('cb').value||'my brand';
-  window.location.href='mailto:solomonfraol3@gmail.com?subject='+encodeURIComponent('Project Inquiry '+b)+'&body='+encodeURIComponent('Hi Fraol,\n\nMy name is '+n+' and I\'m looking for '+s+' for '+b+'.\n\nLooking forward to working together!\n\n'+n);
+  const subject=encodeURIComponent('Project Inquiry '+b);
+  const body=encodeURIComponent('Hi Fraol,\n\nMy name is '+n+' and I\'m looking for '+s+' for '+b+'.\n\nLooking forward to working together!\n\n'+n);
+  if(isApplePlatform()){
+    window.location.href='mailto:solomonfraol3@gmail.com?subject='+subject+'&body='+body;
+  }else{
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=solomonfraol3@gmail.com&su='+subject+'&body='+body,'_blank');
+  }
+}
+
+function handleEmailClick(e){
+  if(!isApplePlatform()){
+    e.preventDefault();
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=solomonfraol3@gmail.com','_blank');
+  }
+  return true;
 }
 </script>
 </body>
