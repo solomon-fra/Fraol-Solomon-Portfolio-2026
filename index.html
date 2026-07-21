@@ -128,28 +128,28 @@ nav.scrolled{background:rgba(179,198,196,.95);backdrop-filter:blur(20px);padding
 
 /* DICE HERO */
 .hero-right{display:flex;align-items:center;justify-content:center;position:relative;opacity:0;animation:fadeUp 1s .5s forwards}
-.dice-container{position:relative;width:420px;height:480px;display:flex;align-items:center;justify-content:center;perspective:1000px}
-.css-vhs{display:block;position:relative;width:260px;height:160px;transform-style:preserve-3d;animation:vhsSpin 12s linear infinite;cursor:pointer;text-decoration:none}
+.dice-container{position:relative;width:480px;height:520px;display:flex;align-items:center;justify-content:center;perspective:1200px}
+.css-vhs{display:block;position:relative;width:360px;height:220px;transform-style:preserve-3d;animation:vhsSpin 12s linear infinite;cursor:pointer;text-decoration:none}
 .css-vhs:hover{animation-play-state:paused}
-.css-vhs .face{position:absolute;width:260px;height:160px;border-radius:6px;background:linear-gradient(155deg,#2b2b2b,#161616);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
-.css-vhs .front{transform:translateZ(45px);padding:14px 16px;box-sizing:border-box;background-image:linear-gradient(155deg,rgba(20,20,20,.55),rgba(10,10,10,.75)),url(images/vhs-shell.webp);background-size:cover;background-position:center}
-.css-vhs .back{transform:translateZ(-45px) rotateY(180deg)}
-.css-vhs .right{width:90px;transform:rotateY(90deg) translateZ(130px);left:85px}
-.css-vhs .left{width:90px;transform:rotateY(-90deg) translateZ(130px);left:85px}
-.css-vhs .top{height:90px;transform:rotateX(90deg) translateZ(80px);top:35px}
-.css-vhs .bottom{height:90px;transform:rotateX(-90deg) translateZ(80px);top:35px}
+.css-vhs .face{position:absolute;width:360px;height:220px;border-radius:8px;background:var(--accent);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.css-vhs .front{transform:translateZ(63px);padding:18px 22px;box-sizing:border-box}
+.css-vhs .back{transform:translateZ(-63px) rotateY(180deg)}
+.css-vhs .right{width:126px;transform:rotateY(90deg) translateZ(180px);left:117px}
+.css-vhs .left{width:126px;transform:rotateY(-90deg) translateZ(180px);left:117px}
+.css-vhs .top{height:126px;transform:rotateX(90deg) translateZ(110px);top:47px}
+.css-vhs .bottom{height:126px;transform:rotateX(-90deg) translateZ(110px);top:47px}
 
-.vhs-reels{position:absolute;top:16px;left:0;right:0;display:flex;justify-content:space-around;padding:0 34px}
-.vhs-reel{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#0a0a0a 0 6px,#3a3a3a 6px 8px,#0a0a0a 8px 30px,#444 30px 38px)}
+.vhs-reels{position:absolute;top:22px;left:0;right:0;display:flex;justify-content:space-around;padding:0 48px}
+.vhs-reel{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle,#0a0a0a 0 8px,#3a3a3a 8px 11px,#0a0a0a 11px 42px,#444 42px 52px)}
 
-.vhs-window{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:150px;height:42px;background:rgba(0,0,0,.4) url(images/vhs-window.webp) center/cover;border:1px solid rgba(255,255,255,.12);border-radius:3px}
+.vhs-window{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:210px;height:58px;background:#0a0e28 url(images/vhs-window.webp) center/cover;border:1px solid rgba(255,255,255,.15);border-radius:4px}
 
-.vhs-label-strip{position:absolute;bottom:34px;left:16px;right:16px;background:#f2ede4;border-radius:2px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
-.vhs-label{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:#1a1a1a;letter-spacing:.03em}
-.vhs-label .dot{color:var(--vhs-label)}
-.vhs-play{font-size:.6rem;font-weight:700;color:#555;letter-spacing:.05em}
+.vhs-label-strip{position:absolute;bottom:48px;left:22px;right:22px;background:#f2ede4;border-radius:2px;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.vhs-label{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:#1a1a1a;letter-spacing:.03em}
+.vhs-label .dot{color:var(--accent)}
+.vhs-play{font-size:.8rem;font-weight:700;color:#555;letter-spacing:.05em}
 
-.vhs-stripe{position:absolute;bottom:14px;left:16px;right:16px;height:5px;background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 16px);opacity:.7}
+.vhs-stripe{position:absolute;bottom:20px;left:22px;right:22px;height:7px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 20px);opacity:.7}
 
 @keyframes vhsSpin{from{transform:rotateX(0) rotateY(0)}to{transform:rotateX(360deg) rotateY(360deg)}}
 .dice-label{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);white-space:nowrap;font-family:'Cabinet Grotesk',sans-serif}
