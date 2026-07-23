@@ -1233,6 +1233,16 @@ shelf.addEventListener('mousemove',e=>{if(!isDrag)return;e.preventDefault();cons
 function isApplePlatform(){
   return /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
 }
+
+function goToEmail(url){
+  const a=document.createElement('a');
+  a.href=url;
+  a.target='_blank';
+  a.rel='noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 function sendMail(){
   const n=document.getElementById('cn').value||'there';
   const s=document.getElementById('cs').value||'a project';
@@ -1242,14 +1252,14 @@ function sendMail(){
   if(isApplePlatform()){
     window.location.href='mailto:solomonfraol3@gmail.com?subject='+subject+'&body='+body;
   }else{
-    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=solomonfraol3@gmail.com&su='+subject+'&body='+body,'_blank');
+    goToEmail('https://mail.google.com/mail/?view=cm&fs=1&to=solomonfraol3@gmail.com&su='+subject+'&body='+body);
   }
 }
 
 function handleEmailClick(e){
   if(!isApplePlatform()){
     e.preventDefault();
-    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=solomonfraol3@gmail.com','_blank');
+    goToEmail('https://mail.google.com/mail/?view=cm&fs=1&to=solomonfraol3@gmail.com');
   }
   return true;
 }
